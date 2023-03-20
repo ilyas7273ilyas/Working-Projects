@@ -1,0 +1,93 @@
+#include<iostream>
+
+char q[25];
+int t=-1;
+
+void push(char a)
+{
+q[++t]=a;
+}
+
+void pop()
+{
+q[t]=0;
+t--;
+}
+
+char tos()
+{
+return q[t];
+}
+
+using namespace std;
+int main(){
+	int n,m,att=0,pri;
+
+	cout<<"Enter the number of resources:\n";
+	cin>>n;
+	int res[n],priority[n];
+
+	cout<<"\nEnter the Priority for every resource\n";
+	for(int i=0;i<n;i++){
+		cin>>priority[i];
+	}
+
+	cout<<"\nEnter the \n1 for resource NOT FREE \n0 for resource FREE:\n";
+	for(int i=0;i<n;i++){
+		cin>>res[i];
+	}
+
+	int choice=0;
+
+	while(choice==0){
+	cout<<"\n*******************************************************************\n";
+	int count=0,q=0,l=0;
+	cout<<"\nEnter the resource no. process want to access:\n";
+	cin>>m;
+	if(att!=0 && pri >= priority[m-1] ){
+	cout<<"\nrefuse the request\n";
+	cout<<"\nWait till the release of all items held by process \n0 for no \n1 for yes\n";
+	cin>>l;
+	if( l== 1)
+    {
+        att=0;
+        pri=0;
+        for(int p=0;p<n;p++)
+        {
+            res[p]=0;
+        }
+    }
+	}
+	else if(m>n || m<1)
+	cout<<"\nResource does not exists\n";
+	else{
+		if(res[m-1]!=0){
+			cout<<"\nPut in waiting list \n";
+			push('a');
+            res[m-1]=0;
+            pri=0;
+
+		}
+
+		if(res[m-1]==0 || tos()=='a'){
+			cout<<"\ngrant process P exclusive access to resources\n";
+			att=1;
+			res[m-1]=1;
+			pri=priority[m-1];
+
+			cout<<"Process want to leave the resource \npress 0 for no\n1 for yes ";
+            cin>>q;
+
+            if(q==1)
+            {
+                att=0;
+                pri=0;
+                res[m-1]=0;
+            }
+		}
+	}
+	cout<<"\nProcess want to end\n0 for No\n1 for Yes\n";
+	cin>>choice;
+}
+return 0;
+}
